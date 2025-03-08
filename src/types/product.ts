@@ -1,20 +1,16 @@
 import type { Request, Response } from "express";
 
 export interface Product {
-	id: string;
+	id: number;
 	name: string;
-	description: string;
+	description: string | null;
 	price: number;
-	category: string;
-	createdAt: Date;
-	updatedAt: Date;
+	categoryId: number;
 }
 
-export type CreateProductDto = Omit<Product, "id" | "createdAt" | "updatedAt">;
+export type CreateProductDto = Omit<Product, "id">;
 
-export type UpdateProductDto = Partial<
-	Omit<Product, "id" | "createdAt" | "updatedAt">
->;
+export type UpdateProductDto = Partial<Omit<Product, "id">>;
 
 export type ProductResponseDto = Product;
 
@@ -49,18 +45,18 @@ export interface ApiResponse<T = unknown> {
 
 export interface IProductService {
 	createProduct(product: CreateProductDto): Promise<Product>;
-	getProductById(id: string): Promise<Product | null>;
+	getProductById(id: number): Promise<Product | null>;
 	getAllProducts(
 		options: PaginationOptions,
 		filters?: ProductQueryFiltersDto,
 	): Promise<PaginatedResult<Product>>;
-	updateProduct(id: string, product: UpdateProductDto): Promise<Product | null>;
-	deleteProduct(id: string): Promise<boolean>;
+	updateProduct(id: number, product: UpdateProductDto): Promise<Product | null>;
+	deleteProduct(id: number): Promise<boolean>;
 }
 
 export interface IProductRepository {
 	create(data: CreateProductDto): Promise<Product>;
-	findById(id: string): Promise<Product | null>;
+	findById(id: number): Promise<Product | null>;
 	findAll(
 		options: PaginationOptions,
 		filters?: ProductQueryFiltersDto,
@@ -68,8 +64,8 @@ export interface IProductRepository {
 		items: Product[];
 		total: number;
 	}>;
-	update(id: string, data: UpdateProductDto): Promise<Product | null>;
-	delete(id: string): Promise<boolean>;
+	update(id: number, data: UpdateProductDto): Promise<Product | null>;
+	delete(id: number): Promise<boolean>;
 }
 
 export interface IProductController {
