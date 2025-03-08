@@ -7,6 +7,8 @@ import type {
 import { ProducController } from "../controller/product.controller";
 import { ProductService } from "../service/product.service";
 import { ProductRepository } from "../repositories/product.repositories";
+import { validateData } from "../middlewares/validateDate";
+import { productSchema } from "../schemas/product.schema";
 
 const router = Router();
 
@@ -16,7 +18,7 @@ const productController: IProductController = new ProducController(
 	productService,
 );
 
-router.post("/product", productController.create);
+router.post("/product", validateData(productSchema), productController.create);
 router.get("/product/:id", productController.getById);
 router.get("/product", productController.getAll);
 router.delete("/product/:id", productController.delete);
